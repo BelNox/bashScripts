@@ -1,6 +1,5 @@
 #! /bin/bash
-WATCH_PATH=watched/
-BUILD_SCRIPT=lib/build.sh
+WATCH_PATH="/home/micah/scripts/bashScripts/folderLookout/excel/"
 INIT_NESSUS=lib/initNessus.sh
 
 function runScript() {
@@ -9,9 +8,17 @@ function runScript() {
 
 inotifywait -m --format '%f'  -e create $WATCH_PATH | while read FILE
 do
-	if (runScript $WATCH_PATH $FILE) ; then
-		echo "Success"
+	echo
+	if [[ "$(echo $FILE | cut -d'.' -f 2)" == "nessus" ]]
+	then
+		echo "Nessus file detected"
+		if (runScript $WATCH_PATH $FILE) ; then
+			echo "Success"
+		else
+			echo "Failed"
+		fi
 	else
-		echo "Failed"
+		echo "Not a nessus file"
+		
 	fi
 done
