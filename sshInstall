@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if [[$1 == "arch"]]
+then
+  pacman -S openssh
+  systemctl enable sshd
+  systemctl start sshd
+  vim /etc/ssh/sshd_config
+  
+else
+  apt-get install openssh-server
+  vim /etc/ssh/sshd_config
+fi
